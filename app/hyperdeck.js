@@ -55,7 +55,7 @@ function stop(){
 function getTimecode(){
 	client.write('transport info\n', function(){
 		client.on('data', function(data){
-			data = data.toString());
+			data = data.toString();
 		});
 	});
 
