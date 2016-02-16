@@ -30,17 +30,23 @@ client.connect({host: '192.168.72.64', port: 9993}, function() {
 
 //play at standard speed
 function play(){
-	client.write('play\n');
-	console.log('Playing');
+	try{
+		client.write('play\n');
+		console.log('Playing');
+	}catch (err){
+		console.log(err);
+	}
 }
 
-function play(speed){
-	var play = "play ";
-	var playSpeed = play.concat(speed.concat('\n'));
-	client.write(playSpeed);
-}
+// function play(speed){
+// 	var play = "play ";
+// 	var playSpeed = play.concat(speed.concat('\n'));
+// 	client.write(playSpeed);
+// }
 
 //stop
 function stop(){
 	client.write('stop\n');
 }
+
+setTimeout(play,1000);
