@@ -53,26 +53,25 @@ function stop(){
 }
 
 function getTimecode(){
-	client.write('transport info\n', function(){
-		client.on('data', function(data){
-			data = data.toString();
-			if(data.includes("transport info")){
-				slotID = data.substring(data.indexOf("slot id: ")+9, data.indexOf("slot id: ")+10);
-				console.log("Slot: " + slotID);
-
-				clipID = data.substring(data.indexOf("clip id: ")+9, data.indexOf("clip id: ")+11);
-				console.log("Clip: " + clipID);
-
-				timecodeData = data.substring(data.indexOf("timecode: ")+10, data.indexOf("timecode: ")+21);
-				console.log("Timecode: " + timecodeData);
-
-				return({"timecode": timecodeData, "slotID": slotID, "clipID": clipID})
-				
-			}
-		});
+	
+	data = client.write('transport info\n', function(){
+		client.on('data', data = function(data){ return data = data.toString();});
+		return data;
 	});
 
+	if(data.includes("transport info"))
+	{
+		slotID = data.substring(data.indexOf("slot id: ")+9, data.indexOf("slot id: ")+10);
+		console.log("Slot: " + slotID);
 
+		clipID = data.substring(data.indexOf("clip id: ")+9, data.indexOf("clip id: ")+11);
+		console.log("Clip: " + clipID);
+
+		timecodeData = data.substring(data.indexOf("timecode: ")+10, data.indexOf("timecode: ")+21);
+		console.log("Timecode: " + timecodeData);
+
+		return({"timecode": timecodeData, "slotID": slotID, "clipID": clipID})
+	}
 }
 
 
