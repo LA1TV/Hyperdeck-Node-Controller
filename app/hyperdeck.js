@@ -37,7 +37,6 @@ function play(speed){
 			speed = speed.toString();
 			var playSpeed = play.concat(speed);
 			client.write(playSpeed + '\n');
-			console.out
 			console.log('Playing at speed: ' + speed);
 		}
 	}catch (err){
@@ -54,8 +53,3 @@ function stop(){
 		console.log(err);
 	}
 }
-
-setTimeout(function(){play(20)},1000);
-
-
-
