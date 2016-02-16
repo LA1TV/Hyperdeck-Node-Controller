@@ -53,3 +53,8 @@ function stop(){
 		console.log(err);
 	}
 }
+
+
+
+module.exports.play = play;
+module.exports.stop = stop;
