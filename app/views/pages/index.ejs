@@ -15,13 +15,13 @@
 
 <h1>Hyperdeck controller</h1>
 <p><% if(connected){%>Connected to hyperdeck.<%}else{%>Not Connected.<%};%></p>
-<p><button class="btn btn-primary">Stop</button> <button class="btn btn-success">Play 100%</button> <button class="btn btn-success">Play 25%</button> <button class="btn btn-danger">Record</button></p>
+<p><div class='btn-group'><button class="btn btn-primary">Stop</button> <button class="btn btn-success">Play 100%</button> <button class="btn btn-success">Play 25%</button> <button class="btn btn-danger">Record</button></div> <button class="btn btn-warning">NEW MARKER</button></p>
 <ol>
   <% for(var i in markers){%>
-    <ul><li><%=markers[i].timecode%></li>
-      <li><button class="btn btn-default">Go To</button></li>
-      <li><button class="btn btn-primary">Play 100% from start</button></li>
-      <li><button class="btn btn-primary">Play 40% from start</button></li>
+    <ul><li><h2>Timecode: <%=markers[i].timecode%></h2></li>
+      <li><div class='btn-group'><button class="btn btn-default">Go To</button>
+      <button class="btn btn-primary">Play 100% from start</button>
+      <button class="btn btn-primary">Play 40% from start</button></div> <button class='btn btn-danger'>Delete</button></li>
     </ul>
     <%}%>
   </ol>
