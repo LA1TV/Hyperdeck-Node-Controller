@@ -1,0 +1,23 @@
+{
+  "name": "hyperdeck-node-controller",
+  "version": "0.0.1",
+  "description": "Web interface for Blackmagic Hyperdeck allowing slow motion playback and marker creation",
+  "main": "index.js",
+  "dependencies": {
+    "net": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LA1TV/Hyperdeck-Node-Controller.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LA1TV/Hyperdeck-Node-Controller/issues"
+  },
+  "homepage": "https://github.com/LA1TV/Hyperdeck-Node-Controller#readme"
+}
