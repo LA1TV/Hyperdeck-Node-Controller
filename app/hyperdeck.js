@@ -56,11 +56,14 @@ function getTimecode(){
 	client.write('transport info\n', function(){
 		client.on('data', function(data){
 			data = data.toString();
+			if(data.includes("transport info")){
+				slotID = data.substring(data.indexOf("slot id: ")+9, data.indexOf("slot id: ")+10);
+				console.log("Slot: " + slotID);
+			}
 		});
 	});
 
-	slotID = data.substring(data.indexOf("slot id: ")+9, data.indexOf("slot id: ")+10);
-	console.log("Slot: " + slotID);
+
 }
 
 
