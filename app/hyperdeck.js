@@ -65,6 +65,9 @@ function getTimecode(){
 
 				timecodeData = data.substring(data.indexOf("timecode: ")+10, data.indexOf("timecode: ")+21);
 				console.log("Timecode: " + timecodeData);
+
+				return({"timecode": timecodeData, "slotID": slotID, "clipID": clipID})
+				
 			}
 		});
 	});
