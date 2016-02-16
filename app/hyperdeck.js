@@ -33,10 +33,8 @@ function play(speed){
 			client.write('play\n');
 			console.log('Playing');
 		}else{
-			var play = "play: speed: ";
-			speed = speed.toString();
-			var playSpeed = play.concat(speed);
-			client.write(playSpeed + '\n');
+			cliend.write("play: speed: ");
+			client.write(speed + '\n');
 			console.log('Playing at speed: ' + speed);
 		}
 	}catch (err){
