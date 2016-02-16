@@ -54,7 +54,16 @@ function stop(){
 	}
 }
 
+function getTimecode(){
+	client.write('transport info\n', function(){
+		client.on('data', function(data){
+			console.log(data.toString());
+		});
+	});
+}
+
 
 
 module.exports.play = play;
 module.exports.stop = stop;
+module.exports.getTimecode = getTimecode;
