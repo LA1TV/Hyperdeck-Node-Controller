@@ -20,3 +20,28 @@ client.on('close', function() {
 	console.log('Connection closed');
 });
 
+
+
+
+//Get time code
+// function getTimecode(){
+// 	client.write('');
+// }
+//Set timecode
+
+//play at standard speed
+function play(){
+	client.write('play');
+}
+
+function play(speed){
+	var play = "play ";
+	var playSpeed = play.concat(speed);
+	client.write(playSpeed);
+}
+
+//stop
+function stop(){
+	client.write('stop');
+}
+//record
