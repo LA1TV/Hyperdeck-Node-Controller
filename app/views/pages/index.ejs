@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>LA1:TV Hyperdeck Controller v 0.1</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<h1>Hyperdeck controller</h1>
+<p><% if(connected){%>Connected to hyperdeck.<%}else{%>Not Connected.<%};%></p>
+<p><button class="btn btn-primary">Stop</button> <button class="btn btn-success">Play 100%</button> <button class="btn btn-success">Play 25%</button> <button class="btn btn-danger">Record</button></p>
+<ol>
+  <% for(var i in markers){%>
+    <ul><li><%=markers[i].timecode%></li>
+      <li><button class="btn btn-default">Go To</button></li>
+      <li><button class="btn btn-primary">Play 100% from start</button></li>
+      <li><button class="btn btn-primary">Play 40% from start</button></li>
+    </ul>
+    <%}%>
+  </ol>
+</body>
+</html>
