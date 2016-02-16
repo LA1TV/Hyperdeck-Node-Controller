@@ -60,7 +60,7 @@ function getTimecode(){
 				slotID = data.substring(data.indexOf("slot id: ")+9, data.indexOf("slot id: ")+10);
 				console.log("Slot: " + slotID);
 
-				clipID = data.substring(data.indexOf("clip id: ")+9, data.indexOf("slot id: ")+11);
+				clipID = data.substring(data.indexOf("clip id: ")+9, data.indexOf("clip id: ")+11);
 				console.log("Clip: " + clipID);
 
 				timecodeData = data.substring(data.indexOf("timecode: ")+10, data.indexOf("timecode: ")+21);
