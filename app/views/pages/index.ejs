@@ -15,13 +15,22 @@
 
 <h1>Hyperdeck controller</h1>
 <p><% if(connected){%>Connected to hyperdeck.<%}else{%>Not Connected.<%};%></p>
-<p><div class='btn-group'><button class="btn btn-primary">Stop</button> <button class="btn btn-success">Play 100%</button> <button class="btn btn-success">Play 25%</button> <button class="btn btn-danger">Record</button></div> <button class="btn btn-warning">NEW MARKER</button></p>
+<p><div class='btn-group'>
+  <button class="btn btn-primary" onclick="stop()">Stop</button>
+  <button class="btn btn-success" onclick="play(100)">Play 100%</button>
+  <button class="btn btn-success" onclick="play(25)">Play 25%</button>
+  <button class="btn btn-danger" onclick="record()">Record</button>
+</div> <button class="btn btn-warning">NEW MARKER</button></p>
 <ol>
   <% for(var i in markers){%>
     <ul><li><h2>Timecode: <%=markers[i].timecode%></h2></li>
-      <li><div class='btn-group'><button class="btn btn-default">Go To</button>
-      <button class="btn btn-primary">Play 100% from start</button>
-      <button class="btn btn-primary">Play 40% from start</button></div> <button class='btn btn-danger'>Delete</button></li>
+      <li>
+        <div class='btn-group'>
+          <button class="btn btn-default" onclick="goto(<%=markers[i].timecode%>)">Go To</button>
+          <button class="btn btn-primary" onclick="play(100)">Play 100% from start</button>
+          <button class="btn btn-primary" onclick="play(40)">Play 40% from start</button>
+        </div>
+        <button class='btn btn-danger'>Delete</button></li>
     </ul>
     <%}%>
   </ol>
@@ -32,6 +41,17 @@
   <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io.connect('http://'+ window.location.host);
+  function play(speed){
+    socket.emit('play', speed);
+  }
+
+  function stop(){
+    socket.emit('stop', 'stop')
+  }
+
+  function goto(timecode){
+    socket.emit('goto', timecode)
+  }
 </script>
 </body>
 </html>
