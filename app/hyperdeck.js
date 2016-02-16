@@ -46,7 +46,12 @@ function play(){
 
 //stop
 function stop(){
-	client.write('stop\n');
+	try{
+		client.write('stop\n');
+		console.log('Playing');
+	}catch (err){
+		console.log(err);
+	}
 }
 
-setTimeout(play,1000);
+setTimeout(stop,1000);
