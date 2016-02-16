@@ -33,7 +33,7 @@ function play(speed){
 			client.write('play\n');
 			console.log('Playing');
 		}else{
-			cliend.write("play: speed: ");
+			client.write("play: speed: ");
 			client.write(speed + '\n');
 			console.log('Playing at speed: ' + speed);
 		}
