@@ -1,12 +1,10 @@
 var net = require('net');
 var client = new net.Socket();
 
-//Confussing the shit out of me here down.
+//Conects to the Hyperdeck.
 
 client.connect({host: '192.168.72.64', port: 9993}, function() {
 	console.log('Connected');
-
-	// client.write('play');
 });
 
 // client.on('data', function(data) {
@@ -38,10 +36,11 @@ function play(){
 //play at a predefined speed
 function playAtSpeed(speed){
 	try{
-		var play = "play ";
+		var play = "play: speed: ";
 		speed = speed.toString();
 		var playSpeed = play.concat(speed);
 		client.write(playSpeed + '\n');
+		console.out
 		console.log('Playing at speed: ' + speed);
 	}catch (err){
 		console.log(err);
@@ -58,7 +57,7 @@ function stop(){
 	}
 }
 
-setTimeout(playAtSpeed(40),1000);
+setTimeout(function(){playAtSpeed(40)},5000);
 
 
 
