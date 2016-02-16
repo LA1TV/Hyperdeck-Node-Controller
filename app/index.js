@@ -23,3 +23,7 @@ app.get('/', function(req, res) {
   };
   res.render('pages/index.ejs', data);
 });
+
+getTimecode(function(data){
+  console.log(data);
+});
