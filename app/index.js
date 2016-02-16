@@ -23,5 +23,3 @@ app.get('/', function(req, res) {
   };
   res.render('pages/index.ejs', data);
 });
-
-hyperdeck.play(100);
