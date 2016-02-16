@@ -5,7 +5,7 @@ var client = new net.Socket();
 
 client.connect({host: '192.168.72.64', port: 9993}, function() {
 	console.log('Connected');
-	play();
+	
 	// client.write('play');
 });
 
