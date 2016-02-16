@@ -5,7 +5,7 @@ var client = new net.Socket();
 
 client.connect({host: '192.168.72.64', port: 9993}, function() {
 	console.log('Connected');
-	
+
 	// client.write('play');
 });
 
@@ -30,20 +30,17 @@ client.connect({host: '192.168.72.64', port: 9993}, function() {
 
 //play at standard speed
 function play(){
-	client.write('play');
-	console.log('Received: ' + data);
+	client.write('play\n');
+	console.log('Playing');
 }
 
 function play(speed){
 	var play = "play ";
-	var playSpeed = play.concat(speed);
+	var playSpeed = play.concat(speed.concat('\n'));
 	client.write(playSpeed);
 }
 
 //stop
 function stop(){
-	client.write('stop');
+	client.write('stop\n');
 }
-//record
-
-setTimeout(play,1000);
