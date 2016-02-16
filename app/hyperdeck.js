@@ -9,9 +9,6 @@ client.connect({host: '192.168.72.64', port: 9993}, function() {
 	// client.write('play');
 });
 
-
-
-
 // client.on('data', function(data) {
 // 	console.log('Received: ' + data);
 // 	client.destroy(); // kill client after server's response
@@ -38,11 +35,18 @@ function play(){
 	}
 }
 
-// function play(speed){
-// 	var play = "play ";
-// 	var playSpeed = play.concat(speed.concat('\n'));
-// 	client.write(playSpeed);
-// }
+//play at a predefined speed
+function playAtSpeed(speed){
+	try{
+		var play = "play ";
+		speed = speed.toString();
+		var playSpeed = play.concat(speed);
+		client.write(playSpeed + '\n');
+		console.log('Playing at speed: ' + speed);
+	}catch (err){
+		console.log(err);
+	}
+}
 
 //stop
 function stop(){
@@ -54,4 +58,7 @@ function stop(){
 	}
 }
 
-setTimeout(stop,1000);
+setTimeout(playAtSpeed(40),1000);
+
+
+
