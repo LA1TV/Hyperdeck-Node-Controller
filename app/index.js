@@ -6,6 +6,9 @@ var app = express();
 var server = app.listen(8080);
 var io = socket.listen(server);
 
+io.on('connection', function(socket){
+  console.log('a user connected');});
+
 
 app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
