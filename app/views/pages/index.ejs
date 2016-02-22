@@ -61,6 +61,8 @@
     function goto(timecode) {
       socket.emit('goto', timecode)
     }
+	function record(){
+	socket.emit('record', 'record')}
   </script>
 </body>
 </html>
