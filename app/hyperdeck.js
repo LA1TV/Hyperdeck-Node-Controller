@@ -7,26 +7,6 @@ client.connect({host: '192.168.72.64', port: 9993}, function() {
 	console.log('Connected');
 });
 
-// client.on('data', function(data) {
-// 	console.log('Received: ' + data);
-// 	client.destroy(); // kill client after server's response
-// });
-
-// client.on('close', function() {
-// 	console.log('Connection closed');
-// });
-
-
-//Get time code
-// function getTimecode(){
-// 	client.write('');
-// }
-//Set timecode
-
-//play at standard speed
-
-
-//play at a predefined speed or standard speed
 function play(speed){
 	try{
 		if(!speed){
@@ -52,6 +32,15 @@ function stop(){
 	}
 }
 
+function record(){
+	try{
+		client.write('record\n');
+		console.log('Recording');
+	}catch (err){
+		console.log(err);
+	}
+}
+
 function getTimecode(callback){
 	client.write('transport info\n');
 	client.on('data', function(data){
@@ -66,4 +55,6 @@ function getTimecode(callback){
 
 module.exports.play = play;
 module.exports.stop = stop;
+module.exports.record = record;
 module.exports.getTimecode = getTimecode;
+

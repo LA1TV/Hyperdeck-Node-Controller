@@ -7,11 +7,15 @@ var app = express();
 var server = app.listen(8080);
 var io = socket.listen(server);
 
+var savedLocations = []
+
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('stop', function(){console.log('stop'); hyperdeck.stop();});
   socket.on('play', function(payload){console.log('play ' + payload); hyperdeck.play(payload);});
   socket.on('goto', function(payload){console.log('goto ' + payload);});
+  socket.on('save', function(){console.log('save'); hyperdeck.getTimecode(saveLocation);}
+  socket.on('record', function(){console.log('record'); hyperdeck.record();})
 });
 
 
@@ -19,10 +23,15 @@ io.on('connection', function(socket){
 
 app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
-  var data = {connected:true, markers:[{timecode:'1234'},{timecode:'123456'}]};
+  var data = {'connected':true, 'markers':savedLocations};
   res.render('pages/index.ejs', data);
 });
 
-getTimecode(function(data){
-  console.log(data);
-});
+getTimecode(saveLocation)
+
+function saveLocation(data){
+	slotID=data.slotID
+	clipID=data.clipID
+	timecode=data.timecode
+	savedLocations=[saveLocation+{'timecode':timecode, 'clip':clipID, 'slot':slotID}]
+}
