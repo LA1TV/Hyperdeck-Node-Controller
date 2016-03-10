@@ -5,7 +5,7 @@ var dataEmitter = new events.EventEmitter();
 
 //Conects to the Hyperdeck.
 
-client.connect({host: '192.168.72.64', port: 9993}, function() {
+client.connect({host: '192.168.72.60', port: 9993}, function() {
 	console.log('Connected');
 });
 
@@ -17,7 +17,7 @@ function play(speed){
 		}else{
 			if(typeof(speed)=="object"){
 				client.write("play: speed: "+speed.speed+"\n");
-				goto(speed.tc)
+				goto(speed.tc);
 				console.log("play: speed: "+speed.speed+" from: "+speed.tc+"\n");
 
 
@@ -56,7 +56,7 @@ function getTimecode(callback){
 }
 function goto(data){
 	client.write('goto: timecode: '+data+'\n');
-	console.log('goto: timecode: '+data+'\n')
+	console.log('goto: timecode: '+data+'\n');
 }
 
 client.on('data', function processTC(payload){

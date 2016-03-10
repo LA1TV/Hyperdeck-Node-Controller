@@ -11,14 +11,31 @@ var server = app.listen(8080);
 var io = socket.listen(server);
 
 
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
   console.log('a user connected');
-  socket.on('stop', function(){console.log('stop'); hyperdeck.stop();});
-  socket.on('play', function(payload){console.log('play ' + payload); hyperdeck.play(payload);});
-  socket.on('goto', function(payload){console.log('goto ' + payload); hyperdeck.goto(payload)});
-  socket.on('save', function(){console.log('save'); hyperdeck.getTimecode();});
-  socket.on('record', function(){console.log('record'); hyperdeck.record();});
-  socket.on('delete', function(ref){deleteLocation(ref)});
+  socket.on('stop', function() {
+    console.log('stop');
+    hyperdeck.stop();
+  });
+  socket.on('play', function(payload) {
+    console.log('play ' + payload);
+    hyperdeck.play(payload);
+  });
+  socket.on('goto', function(payload) {
+    console.log('goto ' + payload);
+    hyperdeck.goto(payload);
+  });
+  socket.on('save', function() {
+    console.log('save');
+    hyperdeck.getTimecode();
+  });
+  socket.on('record', function() {
+    console.log('record');
+    hyperdeck.record();
+  });
+  socket.on('delete', function(ref) {
+    deleteLocation(ref);
+  });
 
 });
 
@@ -27,7 +44,10 @@ io.on('connection', function(socket){
 
 app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
-  var data = {'connected':true, 'markers':savedLocations};
+  var data = {
+    'connected': true,
+    'markers': savedLocations
+  };
   res.render('pages/index.ejs', data);
 });
 
@@ -35,21 +55,25 @@ app.get('/', function(req, res) {
 hyperdeck.dataEmitter.on('transport', saveLocation);
 
 
-function saveLocation(data){
-	slotID=data.slotID;
-	clipID=data.clipID;
-	timecode=data.timecode;
-	savedLocations.push({'timecode':timecode, 'clip':clipID, 'slot':slotID});
+function saveLocation(data) {
+  slotID = data.slotID;
+  clipID = data.clipID;
+  timecode = data.timecode;
+  savedLocations.push({
+    'timecode': timecode,
+    'clip': clipID,
+    'slot': slotID
+  });
   console.log(savedLocations);
   io.emit("savedLocations", savedLocations);
-  writeMarkers(savedLocations)
+  writeMarkers(savedLocations);
 }
 
-function deleteLocation(data){
-	savedLocations.splice(data, 1);
+function deleteLocation(data) {
+  savedLocations.splice(data, 1);
   console.log(savedLocations);
   io.emit("savedLocations", savedLocations);
-  writeMarkers(savedLocations)
+  writeMarkers(savedLocations);
 }
 
 function writeMarkers(data) {
