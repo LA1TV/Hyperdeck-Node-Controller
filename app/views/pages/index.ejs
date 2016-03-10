@@ -27,7 +27,7 @@
         <button class="btn btn-success" onclick="play(25)">Play 25%</button>
         <button class="btn btn-danger" onclick="record()">Record</button>
       </div>
-      <button class="btn btn-warning">NEW MARKER</button>
+      <button class="btn btn-warning" onclick="newMarker()">NEW MARKER</button>
     </p>
     <ol>
       <% for(var i in markers){%>
@@ -39,11 +39,11 @@
           </li>
           <li>
             <div class='btn-group'>
-              <button class="btn btn-default" onclick="goto(<%=markers[i].timecode%>)">Go To</button>
-              <button class="btn btn-success" onclick="play(100)">Play 100% from start</button>
-              <button class="btn btn-success" onclick="play(40)">Play 40% from start</button>
+              <button class="btn btn-default" onclick="goto('<%=markers[i].timecode%>')">Go To</button>
+              <button class="btn btn-success" onclick="play({speed: 100, tc: '<%=markers[i].timecode%>'})">Play 100% from start</button>
+              <button class="btn btn-success" onclick="play({speed: 40, tc: '<%=markers[i].timecode%>'})">Play 40% from start</button>
             </div>
-            <button class='btn btn-danger'>Delete</button>
+            <button class='btn btn-danger' onclick="removeMarker(<%=i%>)">Delete</button>
           </li>
         </ul>
         <%}%>
@@ -55,14 +55,29 @@
     function play(speed) {
       socket.emit('play', speed);
     }
+    function goto(data) {
+      socket.emit('goto', data);
+    }
     function stop() {
       socket.emit('stop', 'stop')
     }
     function goto(timecode) {
       socket.emit('goto', timecode)
     }
-	function record(){
-	socket.emit('record', 'record')}
+    function newMarker() {
+      socket.emit('save')
+      location.reload();
+
+    }
+    function removeMarker(ref) {
+      socket.emit('delete', ref)
+      console.log("delete" + ref)
+      location.reload();
+
+    }
+	  function record(){
+	    socket.emit('record', 'record')
+    }
   </script>
 </body>
 </html>
