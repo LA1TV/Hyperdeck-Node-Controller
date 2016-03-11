@@ -20,11 +20,11 @@ function play(speed) {
 			console.log('Playing');
 		} else {
 			if (typeof(speed) == "object") {
-				client.write("play: speed: " + speed.speed + "\n");
+				//Goto timecode before playing
 				goto(speed.tc);
+				client.write("play: speed: " + speed.speed + "\n");
+
 				console.log("play: speed: " + speed.speed + " from: " + speed.tc + "\n");
-
-
 			} else {
 				client.write("play: speed: ");
 				client.write(speed + '\n');
@@ -62,6 +62,36 @@ function getTimecode(callback) {
 function goto(data) {
 	client.write('goto: timecode: ' + data + '\n');
 	console.log('goto: timecode: ' + data + '\n');
+}
+
+/**
+ * Gets the transport information from the hyperdeck in an array.
+ * Status, speed, slot id, display timecode, timecode.
+ * a
+ **/
+function getTransportInfo(){
+	try {
+		client.write('transport info/n');
+		client.on('data', function processTC(payload) {
+			data = payload.toString();
+			console.log();
+			if (data.includes("transport info")) {
+
+				// slotID = data.substring(data.indexOf("slot id: ") + 9, data.indexOf("slot id: ") + 10);
+				// clipID = data.substring(data.indexOf("clip id: ") + 9, data.indexOf("clip id: ") + 11);
+				// timecodeData = data.substring(data.indexOf("timecode: ") + 10, data.indexOf("timecode: ") + 21);
+				// var output = {
+				// 	"timecode": timecodeData,
+				// 	"slotID": slotID,
+				// 	"clipID": clipID
+				// };
+				// dataEmitter.emit('transport', output);
+			}
+		});
+
+	}catch(err){
+		console.log(err);
+	}
 }
 
 client.on('data', function processTC(payload) {

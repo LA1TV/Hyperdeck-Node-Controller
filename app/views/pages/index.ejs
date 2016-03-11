@@ -69,6 +69,7 @@
         <%}%>
     </ol>
   </div>
+  <button class="btn btn-danger" onclick="getTransportInfo()">Write transport infor to console</button>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io.connect('http://' + window.location.host);
@@ -83,6 +84,9 @@
     }
     function goto(timecode) {
       socket.emit('goto', timecode)
+    }
+    function getTransportInfo() {
+      socket.emit('getTransportInfo')
     }
     function newMarker() {
       socket.emit('save')

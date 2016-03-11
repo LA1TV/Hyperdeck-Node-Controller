@@ -10,6 +10,7 @@ var app = express();
 var server = app.listen(8080);
 var io = socket.listen(server);
 
+
 io.on('connection', function(socket) {
   console.log('a user connected');
   socket.on('stop', function() {
@@ -29,7 +30,7 @@ io.on('connection', function(socket) {
     hyperdeck.getTimecode();
   });
   socket.on('record', function() {
-    console.log('record');
+    console.log('Recording');
     hyperdeck.record();
   });
   socket.on('delete', function(ref) {
@@ -44,7 +45,7 @@ io.on('connection', function(socket) {
 app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
   var data = {
-    'connected': hyperdeck.connected,
+    'connected': true,
     'markers': savedLocations
   };
   res.render('pages/index.ejs', data);
