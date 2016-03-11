@@ -5,6 +5,7 @@ A Hyperdeck controller for control over a web interface to fully uttilise the Hy
 Current Ability
 * Takes in and parses data buffers from the Hyperdeck.
 * Creates a Hyperdeck instance for a web js server to uttilise.
+
 Project goal
 * Save location and clip markers
 * navigate saved files on disks
