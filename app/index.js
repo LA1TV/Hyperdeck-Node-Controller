@@ -1,8 +1,10 @@
 var express = require('express');
 var socket = require('socket.io');
-console.log('connecting');
-var hyperdeck = require('./hyperdeck.js').connect("192.168.72.60");
-console.log('past connection');
+var Hyperdeck = require('./hyperdeck.js');
+
+//Stuff
+var hyperdeck = new Hyperdeck("192.168.72.60");
+
 var savedLocations = require("./markers.json");
 var fs = require("fs");
 
