@@ -1,7 +1,8 @@
 var express = require('express');
 var socket = require('socket.io');
-var hyperdeck = require('./hyperdeck.js');
-
+console.log('connecting');
+var hyperdeck = require('./hyperdeck.js').connect("192.168.72.60");
+console.log('past connection');
 var savedLocations = require("./markers.json");
 var fs = require("fs");
 
@@ -52,7 +53,7 @@ app.get('/', function(req, res) {
 });
 
 //hyperdeck.getTimecode(saveLocation);
-hyperdeck.dataEmitter.on('transport', saveLocation);
+//hyperdeck.dataEmitter.on('transport', saveLocation);
 
 
 function saveLocation(data) {

@@ -1,20 +1,24 @@
+var events = require('events');
+
 
 function failureResponseCode(data){
-  client.emit
+  console.log("*****\nFAILURE :( \n******")
 }
 
 function successResponseCode(data){
-
+console.log("*****\nSUCCESS!\n******")
 }
 
 function asynchornousResponseCode(data){
+  console.log("*****\nASYNC RESPONSE!\n******")
 
 }
 
 //Listen for the data coming in, and pass to other functions to deal with.
-client.on('data', function parser(payload){
+ function parser(payload){
   data = payload.toString();
-  switch (data.chatAt(0)){
+  console.log("parsing the data! " + data.charAt(0))
+  switch (parseInt(data.charAt(0))){
     case 1:
       failureResponseCode(data);
       break;
@@ -25,4 +29,7 @@ client.on('data', function parser(payload){
       asynchornousResponseCode(data);
       break;
     }
-  });
+  };
+
+
+  module.exports.parser = parser;

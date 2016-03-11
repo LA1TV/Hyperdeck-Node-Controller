@@ -1,19 +1,25 @@
 var net = require('net');
-var client = new net.Socket();
-var events = require('events');
-var dataEmitter = new events.EventEmitter();
-var connected=false;
+
+var parser = require('./parser.js');
 //Conects to the Hyperdeck.
 
+
+function hyperdeck(ip){
+	var client = new net.Socket();
+	var connected = false;
+
 client.connect({
-	host: '192.168.72.60',
+	host: ip,
 	port: 9993
 }, function() {
 	console.log('Connected');
-	connected=true;
+	connected = true;
 });
 
-function play(speed) {
+client.on('data', function(data){parser.parser(data); console.log('Passed to parser\n***************'); console.log(data.toString());});
+
+
+this.play = function(speed) {
 	try {
 		if (!speed) {
 			client.write('play\n');
@@ -37,7 +43,7 @@ function play(speed) {
 }
 
 //stop
-function stop() {
+this.stop = function() {
 	try {
 		client.write('stop\n');
 		console.log('Stoping');
@@ -78,7 +84,7 @@ function getTransportInfo(){
 	}
 }
 
-client.on('data', function processTC(payload) {
+/*client.on('data', function processTC(payload) {
 							data = payload.toString();
 								if (data.includes("transport info")) {
 									slotID = data.substring(data.indexOf("slot id: ") + 9, data.indexOf("slot id: ") + 10);
@@ -93,14 +99,13 @@ client.on('data', function processTC(payload) {
 								}
 							},
 
-)
-;
+);*/
 
-module.exports.play = play;
-module.exports.stop = stop;
-module.exports.record = record;
-module.exports.getTimecode = getTimecode;
-module.exports.goto = goto;
-module.exports.getTransportInfo = getTransportInfo;
-module.exports.dataEmitter = dataEmitter;
-module.exports.connected = connected;
+
+}
+
+
+
+exports.connect = function(options){
+	return new hyperdeck(options);
+};

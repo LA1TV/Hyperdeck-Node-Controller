@@ -48,8 +48,8 @@
               <%=markers[i].timecode%>
 
             <div class='btn-group'>
-              <button class="btn btn-warning" onclick="decreaseTimecode()"><span class="glyphicon glyphicon-step-backward"></span></button>
-              <button class="btn btn-warning" onclick="increaseTimecode()"><span class="glyphicon glyphicon-step-forward"></span></button>
+              <button class="btn btn-warning" onclick="decreaseTimecode(<%=i%>)"><span class="glyphicon glyphicon-step-backward"></span></button>
+              <button class="btn btn-warning" onclick="increaseTimecode(<%=i%>)"><span class="glyphicon glyphicon-step-forward"></span></button>
             </div>
             <div style="float: right">
               <button class='btn btn-danger' onclick="removeMarker(<%=i%>)"><span class="glyphicon glyphicon-remove"></span></button>
@@ -69,7 +69,7 @@
         <%}%>
     </ol>
   </div>
-  <button class="btn btn-danger" onclick="getTransportInfo()">Write transport infor to console</button>
+  <button class="btn btn-danger" onclick="getTransportInfo()">Write transport info to console</button>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io.connect('http://' + window.location.host);
