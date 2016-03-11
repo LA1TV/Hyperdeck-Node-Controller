@@ -10,7 +10,6 @@ var app = express();
 var server = app.listen(8080);
 var io = socket.listen(server);
 
-
 io.on('connection', function(socket) {
   console.log('a user connected');
   socket.on('stop', function() {
@@ -45,7 +44,7 @@ io.on('connection', function(socket) {
 app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
   var data = {
-    'connected': true,
+    'connected': hyperdeck.connected,
     'markers': savedLocations
   };
   res.render('pages/index.ejs', data);
