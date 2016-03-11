@@ -63,7 +63,7 @@ this.record = function() {
 	}
 }
 
-this.getTimecode = function(callback) {
+this.getTimecode = function() {
 	client.write('transport info\n');
 	return new Promise(function(fulfill, reject){
 		parser.notifier.on('transport', function(data){
