@@ -52,7 +52,7 @@ this.stop = function() {
 	}
 }
 
-function record() {
+this.record = function() {
 	try {
 		client.write('record\n');
 		console.log('Recording');
@@ -61,11 +61,11 @@ function record() {
 	}
 }
 
-function getTimecode(callback) {
+this.getTimecode = function(callback) {
 	client.write('transport info\n');
 }
 
-function goto(data) {
+this.goto = function(data) {
 	client.write('goto: timecode: ' + data + '\n');
 	console.log('goto: timecode: ' + data + '\n');
 }
@@ -75,7 +75,7 @@ function goto(data) {
  * Status, speed, slot id, display timecode, timecode.
  * a
  **/
-function getTransportInfo(){
+this.getTransportInfo = function(){
 	try {
 		client.write('transport info/n');
 
