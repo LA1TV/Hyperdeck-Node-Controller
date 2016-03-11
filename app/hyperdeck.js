@@ -2,6 +2,8 @@ var net = require('net');
 
 var parser = require('./parser.js');
 //Conects to the Hyperdeck.
+var Promise = require('promise');
+
 
 
 function hyperdeck(ip){
@@ -63,6 +65,13 @@ this.record = function() {
 
 this.getTimecode = function(callback) {
 	client.write('transport info\n');
+	return new Promise(function(fulfill, reject){
+		parser.notifier.on('transport', function(data){
+if (data=='err') reject(data)
+			else fulfill(data)
+
+		}
+	})
 }
 
 this.goto = function(data) {
