@@ -2,11 +2,11 @@ Hyperdeck-Node-Controller v0.1
 -------------------------
 A Hyperdeck controller for control over a web interface to fully uttilise the Hyperdeck API
 
-Current Ability
+#### Current Ability
 * Takes in and parses data buffers from the Hyperdeck.
 * Creates a Hyperdeck instance for a web js server to uttilise.
 
-Project goal
+#### Project goal
 * Save location and clip markers
 * navigate saved files on disks
 * notify on events
