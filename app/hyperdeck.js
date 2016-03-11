@@ -72,22 +72,6 @@ function goto(data) {
 function getTransportInfo(){
 	try {
 		client.write('transport info/n');
-		client.on('data', function processTC(payload) {
-			data = payload.toString();
-			console.log();
-			if (data.includes("transport info")) {
-
-				// slotID = data.substring(data.indexOf("slot id: ") + 9, data.indexOf("slot id: ") + 10);
-				// clipID = data.substring(data.indexOf("clip id: ") + 9, data.indexOf("clip id: ") + 11);
-				// timecodeData = data.substring(data.indexOf("timecode: ") + 10, data.indexOf("timecode: ") + 21);
-				// var output = {
-				// 	"timecode": timecodeData,
-				// 	"slotID": slotID,
-				// 	"clipID": clipID
-				// };
-				// dataEmitter.emit('transport', output);
-			}
-		});
 
 	}catch(err){
 		console.log(err);
@@ -95,25 +79,28 @@ function getTransportInfo(){
 }
 
 client.on('data', function processTC(payload) {
-	data = payload.toString();
-	if (data.includes("transport info")) {
-		slotID = data.substring(data.indexOf("slot id: ") + 9, data.indexOf("slot id: ") + 10);
-		clipID = data.substring(data.indexOf("clip id: ") + 9, data.indexOf("clip id: ") + 11);
-		timecodeData = data.substring(data.indexOf("timecode: ") + 10, data.indexOf("timecode: ") + 21);
-		var output = {
-			"timecode": timecodeData,
-			"slotID": slotID,
-			"clipID": clipID
-		};
-		dataEmitter.emit('transport', output);
-	}
-});
+							data = payload.toString();
+								if (data.includes("transport info")) {
+									slotID = data.substring(data.indexOf("slot id: ") + 9, data.indexOf("slot id: ") + 10);
+									clipID = data.substring(data.indexOf("clip id: ") + 9, data.indexOf("clip id: ") + 11);
+									timecodeData = data.substring(data.indexOf("timecode: ") + 10, data.indexOf("timecode: ") + 21);
+									var output = {
+										"timecode": timecodeData,
+										"slotID": slotID,
+										"clipID": clipID
+									};
+									dataEmitter.emit('transport', output);
+								}
+							},
+
+)
+;
 
 module.exports.play = play;
 module.exports.stop = stop;
 module.exports.record = record;
 module.exports.getTimecode = getTimecode;
 module.exports.goto = goto;
-
+module.exports.getTransportInfo = getTransportInfo;
 module.exports.dataEmitter = dataEmitter;
 module.exports.connected = connected;
