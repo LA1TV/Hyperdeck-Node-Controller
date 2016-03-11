@@ -13,13 +13,18 @@
 </head>
 
 <body>
-  <div class='container'>
-    <h1>Hyperdeck controller</h1>
-    <p>
-      <% if(connected){%>Connected to hyperdeck.
-        <%}else{%>Not Connected.
-          <%};%>
-    </p>
+  <nav class="navbar navbar-default" style="padding: 0 10px">
+
+      <h1>Hyperdeck controller
+        <h5>
+          <div style="float: right">
+            <% if(connected){%>Connected to hyperdeck.
+              <%}else{%>Not Connected.
+            <%};%>
+          </div>
+        </h5>
+      </h1>
+
     <p>
       <div class='btn-group'>
         <button class="btn btn-primary" onclick="stop()">Stop</button>
@@ -29,22 +34,37 @@
       </div>
       <button class="btn btn-warning" onclick="newMarker()">NEW MARKER</button>
     </p>
+  </nav>
+<div class='container'>
+  <p>
+
+  </p>
     <ol>
       <% for(var i in markers){%>
         <ul>
-          <li>
-            <h2>Timecode:
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <b>Timecode:</b>
               <%=markers[i].timecode%>
-            </h2>
-          </li>
-          <li>
+
+            <div class='btn-group'>
+              <button class="btn btn-warning" onclick="decreaseTimecode()"><span class="glyphicon glyphicon-step-backward"></span></button>
+              <button class="btn btn-warning" onclick="increaseTimecode()"><span class="glyphicon glyphicon-step-forward"></span></button>
+            </div>
+            <div style="float: right">
+              <button class='btn btn-danger' onclick="removeMarker(<%=i%>)"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+
+            </div>
+            <div class="panel-body">
             <div class='btn-group'>
               <button class="btn btn-default" onclick="goto('<%=markers[i].timecode%>')">Go To</button>
               <button class="btn btn-success" onclick="play({speed: 100, tc: '<%=markers[i].timecode%>'})">Play 100% from start</button>
               <button class="btn btn-success" onclick="play({speed: 40, tc: '<%=markers[i].timecode%>'})">Play 40% from start</button>
             </div>
-            <button class='btn btn-danger' onclick="removeMarker(<%=i%>)">Delete</button>
-          </li>
+
+          </div>
+          </div>
         </ul>
         <%}%>
     </ol>
