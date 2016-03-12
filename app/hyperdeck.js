@@ -1,6 +1,7 @@
 var net = require('net');
 var parser = require('./parser.js');
 var Promise = require('promise');
+var timecode = "";
 
 function Hyperdeck(ip){
 	var client = new net.Socket();
@@ -14,7 +15,7 @@ function Hyperdeck(ip){
 		connected = true;
 	});
 
-	client.on('data', function(data){parser.parser(data); console.log('Passed to parser\n***************'); console.log(data.toString());});
+	client.on('data', function(data){parser.parser(data); console.log('Passed to parser\n***************');});
 
 	this.play = function(speed) {
 		try {
@@ -67,13 +68,17 @@ function Hyperdeck(ip){
 		client.write('transport info\n');
 		return new Promise(function(fulfill, reject){
 			parser.notifier.on('transport', function(data){
-				if (data=='err') {
-					reject(data);
-				} else {
+				console.log("***************************\n Speed at this point is: " + data.speed);
+				if (data!='err') {
+					timecode = data.timecode;
+					console.log("Spped is: " + data.speed);
 					fulfill(data);
+				} else {
+					reject(data);
 				}
 			});
 		});
+
 	};
 
 	/**

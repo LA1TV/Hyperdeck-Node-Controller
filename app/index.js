@@ -39,6 +39,9 @@ io.on('connection', function(socket) {
   socket.on('delete', function(ref) {
     deleteLocation(ref);
   });
+  socket.on('getTransportInfo', function(ref) {
+    hyperdeck.getTransportInfo();
+  });
 
 });
 
@@ -54,7 +57,7 @@ app.get('/', function(req, res) {
   res.render('pages/index.ejs', data);
 });
 
-//hyperdeck.getTimecode(saveLocation);
+//hyperdeck.getTimecodeInfo();
 //hyperdeck.dataEmitter.on('transport', saveLocation);
 
 

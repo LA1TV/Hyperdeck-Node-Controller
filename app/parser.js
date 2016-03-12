@@ -21,7 +21,7 @@ function parser(payload){
 
 function failureResponseCode(data){
   console.log("*****\nFAILURE!\n******");
-  notifier.emit('fail');
+  notifier.emit('failure', data.substring(4,data.length));
 }
 
 function successResponseCode(data){
