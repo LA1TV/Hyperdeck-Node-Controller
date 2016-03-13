@@ -67,11 +67,11 @@ function Hyperdeck(ip){
 	this.getTransportInfo = function() {
 		client.write('transport info\n');
 		return new Promise(function(fulfill, reject){
-			parser.notifier.on('transport', function(data){
+			parser.notifier.one('transport', function(data){
 				console.log("***************************\n Speed at this point is: " + data.speed);
 				if (data!='err') {
 					timecode = data.timecode;
-					console.log("Spped is: " + data.speed);
+					console.log("Speed is: " + data.speed);
 					fulfill(data);
 				} else {
 					reject(data);
