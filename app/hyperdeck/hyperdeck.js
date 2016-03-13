@@ -1,11 +1,14 @@
 var net = require('net');
-var parser = require('./parser.js');
 var Promise = require('promise');
+var Request = require('requestHandler.js');
 var timecode = "";
+
+
 
 function Hyperdeck(ip){
 	var client = new net.Socket();
 	var connected = false;
+	var request = new Request(client);
 
 	client.connect({
 		host: ip,
@@ -91,19 +94,3 @@ function Hyperdeck(ip){
 
 }
 module.exports = Hyperdeck;
-/*client.on('data', function processTC(payload) {
-							data = payload.toString();
-								if (data.includes("transport info")) {
-									slotID = data.substring(data.indexOf("slot id: ") + 9, data.indexOf("slot id: ") + 10);
-									clipID = data.substring(data.indexOf("clip id: ") + 9, data.indexOf("clip id: ") + 11);
-									timecodeData = data.substring(data.indexOf("timecode: ") + 10, data.indexOf("timecode: ") + 21);
-									var output = {
-										"timecode": timecodeData,
-										"slotID": slotID,
-										"clipID": clipID
-									};
-									dataEmitter.emit('transport', output);
-								}
-							},
-
-);*/
