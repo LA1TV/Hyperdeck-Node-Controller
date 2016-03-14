@@ -40,7 +40,7 @@ function successResponseCode(data){
 
 function asynchornousResponseCode(data){
   console.log("*****\nASYNC RESPONSE!\n******");
-  notifier.emit('async data');
+  notifier.emit('asyncronsousResponse', data);
 }
 
 function convertDataToObject(data) {
