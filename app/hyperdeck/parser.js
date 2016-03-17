@@ -60,6 +60,9 @@ function convertDataToObject(data) {
   return dataObject;
 }
 
+function getEmitter() {
+  return notifier;
+}
 
 
 

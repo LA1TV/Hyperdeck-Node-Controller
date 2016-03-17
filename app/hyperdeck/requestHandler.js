@@ -54,9 +54,27 @@ function RequestHandler(client) {
    * @param request, the request to send to the hyperdeck.
    **/
   function doRequest(request) {
-    client.write(request);
-    client.on('data', function(data){parser.parser(data);});
-  }
+	// makeRequest
+	client.send(request);
+	parser.getEmitter().one("synchronousEvent", handleResponse);
+
+	
+	emitter.one("connectionLost", handleError);
+	// connection lost
+	parser.getEmitter().off("synchronouseEvent", handleResponse);
+	reject();
+
+
+	function handleResponse(data) {
+		emitter.off("connectionLost", handleError);
+		resolve(data);
+	}
+
+	function handleError() {
+		parser.getEmitter().off("synchronouseEvent", handleResponse);
+		reject();
+	}
+}
 }
 
 module.exports.makeRequest = makeRequest;

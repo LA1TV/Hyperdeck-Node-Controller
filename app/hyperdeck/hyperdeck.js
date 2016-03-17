@@ -18,8 +18,6 @@ function Hyperdeck(ip){
 		connected = true;
 	});
 
-	client.on('data', function(data){parser.parser(data); console.log('Passed to parser\n***************');});
-
 	this.play = function(speed) {
 		try {
 			if (!speed) {
