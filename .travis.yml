@@ -1,0 +1,5 @@
+before_script: cd app
+language: node_js
+node_js:
+  - 5.7.0
+script: gulp
