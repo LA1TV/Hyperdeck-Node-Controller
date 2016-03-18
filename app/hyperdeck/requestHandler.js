@@ -1,7 +1,6 @@
 var parser = require('./parser.js');
 var Promise = require('promise');
 
-
 var pendingRequests = [];
 var requestCompletionPromise = [];
 var requestInProgress = false;
@@ -21,41 +20,48 @@ function RequestHandler(client) {
    **/
   function performNextRequest() {
     if (pendingRequests.length === 0 || requestInProgress) {
-      return; //returns if theres nothing left in the chain or theres a request in progress.
+      return; //returns if there's nothing left in the chain or there's a request in progress.
     }
 
-    requestInProgress = true;
     var request = pendingRequests.shift();
+    var requestCompletionPromise = requestCompletionPromise.shift();
+    requestInProgress = true;
 
-    client.write(request);
-
-    // Listen for a response, either error, or data.
+    function onRequestCompleted() {
+      requestInProgress = false;
+      performNextRequest();
+    }
+    
+    function registerListeners() {
+      parser.getNotifier().on("synchronousResponse", handleResponse);
+      parser.getNotifier().on("connectionLost", handleConnectionLoss);
+    }
+    
+    function removeListeners() {
+      parser.getNotifier().off("synchronousResponse", handleResponse);
+      parser.getNotifier().off("connectionLost", handleConnectionLoss);
+    }
+    
     function handleResponse(response) {
-      requestCompletionPromise.shift().resolve(response);
+      console.log("Got response. Resolving provided promise with response.");
+      removeListeners();
+      requestCompletionPromise.resolve(response);
+      onRequestCompleted();
     }
 
-    function handleResponseClientError(response) {
-      requestCompletionPromise.shift().reject(response);
+    function handleConnectionLoss() {
+      console.log("Connection lost. Rejecting provided promise to signify failure.");
+      removeListeners();
+      requestCompletionPromise.reject();
+      onRequestCompleted();
     }
-
-    function handleError(response) {
-      requestCompletionPromise.shift().reject(response);
-    }
-    parser.getNotifier().one("synchronousEvent", function syncEventListenetr(response){handleResponse(response);});
-    parser.getNotifier().one("synchronousEventError", function(response){handleResponseClientError(response);});
-    parser.getNotifier().one("error", function errorListener(response){handleError(response);});
-
-
-
-    requestInProgress = false;
-    performNextRequest();
-  }
-
-  // Response Listener.
-  try{
-    client.on('data', function(data){parser.parser(data);});
-  }catch(err){
-    console.log("ERROR: " + err);
+    
+    registerListeners();
+    // make the request
+    // either the "synchronousResponse" or "connectionLost" event should be
+    // fired at some point in the future.
+    console.log("Making request: "+request);
+    client.write(request);
   }
 
   /**
@@ -71,20 +77,10 @@ function RequestHandler(client) {
       });
     });
     pendingRequests.push(requestToProcess);
+    console.log("Queueing request: "+requestToProcess);
     performNextRequest();
     return completionPromise;
   };
-
-
-
-  // /**
-  //  * Performs the request made by the Hyperdeck
-  //  * @param request, the request to send to the hyperdeck.
-  //  **/
-  // function doReqest(request) {
-	//   // makeRequest
-  //
-  // }
 }
 
 module.exports = RequestHandler;
