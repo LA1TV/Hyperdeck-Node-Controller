@@ -62,5 +62,9 @@ function convertDataToObject(data) {
   return dataObject;
 }
 
+function getNotifier() {
+  return notifier;
+}
+
 module.exports.parser = parser;
-module.exports.notifier = notifier;
+module.exports.notifier = getNotifier;

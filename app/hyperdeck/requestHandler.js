@@ -13,7 +13,11 @@ var hyperdeckClient = "";
 function RequestHandler(client) {
 
   // Response Listener.
-  client.on('data', function(data){parser.parser(data);});
+  try{
+    client.on('data', function(data){parser.parser(data);});
+  }catch(err){
+    console.log("ERROR: " + err);
+  }
 
   /**
    * Called externally with the request made into it.
@@ -45,47 +49,44 @@ function RequestHandler(client) {
 
     requestInProgress = true;
     var request = pendingRequests.shift();
-    doReqest(request).then(function(data) {
-      if (resolve) {
-        requestCompletionPromise.shift().resolve(data);
-      } else if (reject) {
-        requestCompletionPromise.shift().reject(data);
-      }
-      requestInProgress = false;
-      performNextRequest();
-    });
-  }
 
-  /**
-   * Performs the request made by the Hyperdeck
-   * @param request, the request to send to the hyperdeck.
-   **/
-  function doRequest(request) {
-	  // makeRequest
-	  client.send(request);
+    client.write(request);
+
     // Listen for a response, either error, or data.
-	  parser.notifier.one("synchronousEvent", function(response){handleResponse(response);});
-    parser.notifier.one("synchronousEventError", function(response){handleResponseClientError(response);});
-    parser.notifier.one("error", function(response){handleError(error);});
+	  parser.getNotifier().one("synchronousEvent", function(response){handleResponse(response);});
+    parser.getNotifier().one("synchronousEventError", function(response){handleResponseClientError(response);});
+    parser.getNotifier().one("error", function(response){handleError(error);});
 
     function handleResponse(response) {
-      parser.notifer.off("synchronousEventError", data);
-      parser.notifer.off("error", data);
-      resolve(response);
+      parser.getNotifer().off("synchronousEventError", data);
+      parser.getNotifer().off("error", data);
+      requestCompletionPromise.shift().resolve(data);
     }
 
     function handleResponseClientError(response) {
-      parser.notifer.off("synchronousEvent", data);
-      parser.notifer.off("error", data);
-      reject(response);
+      parser.getNotifer().off("synchronousEvent", data);
+      parser.getNotifer().off("error", data);
+      requestCompletionPromise.shift().reject(data);
     }
 
     function handleError(response) {
-      parser.notifer.off("synchronousEvent", data);
-      parser.notifer.off("synchronousEventError", data);
-      reject(response);
+      parser.getNotifer().off("synchronousEvent", data);
+      parser.getNotifer().off("synchronousEventError", data);
+      requestCompletionPromise.shift().reject(data);
     }
+
+    requestInProgress = false;
+    performNextRequest();
   }
+
+  // /**
+  //  * Performs the request made by the Hyperdeck
+  //  * @param request, the request to send to the hyperdeck.
+  //  **/
+  // function doReqest(request) {
+	//   // makeRequest
+  //
+  // }
 }
 
-module.exports = exports;
+module.exports = RequestHandler;
