@@ -14,3 +14,4 @@ A Hyperdeck controller for control over a web interface to fully uttilise the Hy
 * Play at different speeds
 * Able to configure hyperdeck settings
 * Fully compatible with all browsers
+* _Eventually separate the HyperDeck connection and control code to a separate NPM installable module_
