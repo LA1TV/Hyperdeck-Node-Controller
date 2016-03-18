@@ -17,7 +17,7 @@
     "jshint-stylish": "^2.1.0"
   },
   "scripts": {
-    "test": "gulp"
+    "test": "./node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
