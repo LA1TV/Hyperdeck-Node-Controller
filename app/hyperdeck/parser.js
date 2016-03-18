@@ -2,7 +2,7 @@ var events = require('events');
 var notifier = new events.EventEmitter();
 
 //Listen for the data coming in, and pass to other functions to deal with.
-function parser(payload){
+function parser(payload) {
   //Convert to string then pass into the switch/case to decide which function to use.
   var data = payload.toString();
   console.log(data);
@@ -17,38 +17,40 @@ function parser(payload){
       asynchornousResponseCode(data);
       break;
     default:
-      console.error("ERROR FUCKING");
+      console.error("ERROR");
+      notifier.emit('errorInData', data);
   }
 }
 
-function failureResponseCode(data){
-  console.log("*****\nFAILURE!\n******");
-  notifier.emit('failure', data.substring(4,data.length));
+function failureResponseCode(data) {
+  console.log("***** FAILURE - SYNCHRONOUS RESPONSE *****");
+  dataObject = convertDataToObject(data);
+  notifier.emit('synchronousEventError', dataObject);
 }
 
-function successResponseCode(data){
-  var dataObject = {};
-  console.log("I get here");
-  switch (data.substring(0,3)) {
-    case "208": //Transport info.
-      dataObject = convertDataToObject(data);
-      notifier.emit('transport', dataObject);
-      break;
-  }
-  notifier.emit('success');
+function successResponseCode(data) {
+  console.log("***** SUCESSFUL - SYNCHRONOUS RESPONSE *****");
+  dataObject = convertDataToObject(data);
+  notifier.emit('synchronousEvent', dataObject);
 }
 
-function asynchornousResponseCode(data){
-  console.log("*****\nASYNC RESPONSE!\n******");
-  notifier.emit('asyncronsousResponse', data);
+function asynchornousResponseCode(data) {
+  console.log("***** ASYNCHRONOUS RESPONSE *****");
+  dataObject = convertDataToObject(data);
+  notifier.emit('asynchronousEvent', data);
 }
 
+/**
+ * Converts the data to a Object.
+ * So the hyperdeck class can do things nicely with it.
+ * @return dataObject, The data in a nice object.
+ **/
 function convertDataToObject(data) {
   var dataObject = {};
   var re = /^(.*)\: (.*)$/;
 
-  data = data.split("\r\n").shift(); //Removes the first element in the array after spliting.
-
+  data = data.split("\r\n"); //Splits the data on a new line.
+  dataObject.title = data.shift(); // First element of the data object will be {title : FIRST_LINE_OF_DATA}
   //Append the rest into an object for emitting.
   for(var i = 0; i< data.length; i++) {
     var lineData = re.exec(data[i]);
@@ -60,12 +62,5 @@ function convertDataToObject(data) {
   return dataObject;
 }
 
-function getEmitter() {
-  return notifier;
-}
-
-
-
-
-  module.exports.parser = parser;
-  module.exports.notifier = notifier;
+module.exports.parser = parser;
+module.exports.notifier = notifier;

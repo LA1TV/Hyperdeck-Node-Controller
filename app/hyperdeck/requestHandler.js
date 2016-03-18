@@ -3,6 +3,7 @@ var parser = require('./parser.js');
 var pendingRequests = [];
 var requestCompletionPromise = [];
 var requestInProgress = false;
+var hyperdeckClient = "";
 
 /**
  * The Request handler for the Hyperdeck API.
@@ -11,12 +12,15 @@ var requestInProgress = false;
  **/
 function RequestHandler(client) {
 
+  // Response Listener.
+  client.on('data', function(data){parser.parser(data);});
+
   /**
    * Called externally with the request made into it.
    * Then chains and calls performNextRequest.
    * @return The promise for the hyperdeck based of its completion.
    **/
-  function makeRequest(requestToProcess) {
+  this.makeRequest = function(requestToProcess) {
     var completionPromise = new Promise(function(resolve, reject) {
       requestCompletionPromise.push({
         resolve: resolve,
@@ -26,7 +30,7 @@ function RequestHandler(client) {
     pendingRequests.push(requestToProcess);
     performNextRequest();
     return completionPromise;
-  }
+  };
 
   /**
    * Checks the chain isn't empty or that the request is in progress.
@@ -36,15 +40,18 @@ function RequestHandler(client) {
    **/
   function performNextRequest() {
     if (pendingRequests.length === 0 || requestInProgress) {
-      return; //returns if theres nothing left in the chain.
+      return; //returns if theres nothing left in the chain or theres a request in progress.
     }
 
     requestInProgress = true;
     var request = pendingRequests.shift();
     doReqest(request).then(function(data) {
-      requestCompletionPromise.shift().resolve(data);
+      if (resolve) {
+        requestCompletionPromise.shift().resolve(data);
+      } else if (reject) {
+        requestCompletionPromise.shift().reject(data);
+      }
       requestInProgress = false;
-
       performNextRequest();
     });
   }
@@ -54,27 +61,31 @@ function RequestHandler(client) {
    * @param request, the request to send to the hyperdeck.
    **/
   function doRequest(request) {
-	// makeRequest
-	client.send(request);
-	parser.getEmitter().one("synchronousEvent", handleResponse);
+	  // makeRequest
+	  client.send(request);
+    // Listen for a response, either error, or data.
+	  parser.notifier.one("synchronousEvent", function(response){handleResponse(response);});
+    parser.notifier.one("synchronousEventError", function(response){handleResponseClientError(response);});
+    parser.notifier.one("error", function(response){handleError(error);});
 
-	
-	emitter.one("connectionLost", handleError);
-	// connection lost
-	parser.getEmitter().off("synchronouseEvent", handleResponse);
-	reject();
+    function handleResponse(response) {
+      parser.notifer.off("synchronousEventError", data);
+      parser.notifer.off("error", data);
+      resolve(response);
+    }
 
+    function handleResponseClientError(response) {
+      parser.notifer.off("synchronousEvent", data);
+      parser.notifer.off("error", data);
+      reject(response);
+    }
 
-	function handleResponse(data) {
-		emitter.off("connectionLost", handleError);
-		resolve(data);
-	}
-
-	function handleError() {
-		parser.getEmitter().off("synchronouseEvent", handleResponse);
-		reject();
-	}
+    function handleError(response) {
+      parser.notifer.off("synchronousEvent", data);
+      parser.notifer.off("synchronousEventError", data);
+      reject(response);
+    }
+  }
 }
-}
 
-module.exports.makeRequest = makeRequest;
+module.exports = exports;

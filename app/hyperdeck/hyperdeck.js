@@ -1,6 +1,6 @@
 var net = require('net');
 var Promise = require('promise');
-var Request = require('requestHandler.js');
+var RequestHandler = require('./requestHandler.js');
 var timecode = "";
 
 
@@ -8,7 +8,7 @@ var timecode = "";
 function Hyperdeck(ip){
 	var client = new net.Socket();
 	var connected = false;
-	var request = new Request(client);
+	var request = new RequestHandler(client);
 
 	client.connect({
 		host: ip,
@@ -66,19 +66,27 @@ function Hyperdeck(ip){
 	 * a
 	 **/
 	this.getTransportInfo = function() {
-		client.write('transport info\n');
-		return new Promise(function(fulfill, reject){
-			parser.notifier.one('transport', function(data){
-				console.log("***************************\n Speed at this point is: " + data.speed);
-				if (data!='err') {
-					timecode = data.timecode;
-					console.log("Speed is: " + data.speed);
-					fulfill(data);
-				} else {
-					reject(data);
-				}
-			});
-		});
+		request.makeRequest('transport info\n').then(function(data){
+		if(resolve){
+			timecode = data.timecode;
+			console.log("Speed is: " + data.speed);
+		}else if (reject) {
+			console.log("Error in response: " + data);
+		}
+	});
+
+		// return new Promise(function(fulfill, reject){
+		// 	parser.notifier.one('transport', function(data){
+		// 		console.log("***************************\n Speed at this point is: " + data.speed);
+		// 		if (data!='err') {
+		// 			timecode = data.timecode;
+		// 			console.log("Speed is: " + data.speed);
+		// 			fulfill(data);
+		// 		} else {
+		// 			reject(data);
+		// 		}
+		// 	});
+		// });
 
 	};
 
