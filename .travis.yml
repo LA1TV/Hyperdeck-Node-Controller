@@ -1,4 +1,6 @@
-before_script: cd app
+before_script:
+    - cd app
+    - npm install -g gulp
 language: node_js
 sudo: required
 node_js:
