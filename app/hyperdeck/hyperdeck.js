@@ -1,3 +1,4 @@
+/*jshint latedef: false */
 var ResponseHandler = require('./response-handler.js');
 var Promise = require('promise');
 var net = require('net');
@@ -27,7 +28,7 @@ function Hyperdeck(ip) {
   // - disconnect from the hypedeck
   // - call destroy() on the response handler
   // - remove the asynchronousResponse listener on the response handler notifier
-  
+
   responseHandler.getNotifier().on("asynchronousResponse", function(data) {
     // the developer will listen on the notifier for asynchronous events
     // fired from the hyperdeck
@@ -46,17 +47,18 @@ function Hyperdeck(ip) {
     performNextRequest();
   });
 
-  // TODO call this if the connection is lost
-  // or the connection fails to be made
-  function onConnectionLost() {
-    if (!connected) {
-      throw "Must be connected in order to loose the connection!";
-    }
-    connecting = false;
-    connected = false;
-    notifier.emit("connectionLost");
-    performNextRequest();
-  }
+    // TODO call this if the connection is lost
+    // or the connection fails to be made
+    /*function onConnectionLost() {
+        if (!connected) {
+            throw "Must be connected in order to loose the connection!";
+        }
+
+        connecting = false;
+        connected = false;
+        notifier.emit("connectionLost");
+        performNextRequest();
+    }*/
 
   /**
    * Checks the chain isn't empty or that the request is in progress.
@@ -80,20 +82,20 @@ function Hyperdeck(ip) {
       requestInProgress = false;
       performNextRequest();
     }
-    
+
     function registerListeners() {
       listenersRegistered = true;
       responseHandler.getNotifier().on("synchronousResponse", handleResponse);
       notifier.on("connectionLost", handleConnectionLoss);
     }
-    
+
     function removeListeners() {
       if (listenersRegistered) {
         responseHandler.getNotifier().off("synchronousResponse", handleResponse);
         notifier.off("connectionLost", handleConnectionLoss);
       }
     }
-    
+
     function handleResponse(response) {
       console.log("Got response. Resolving provided promise with response.");
       removeListeners();
@@ -103,7 +105,7 @@ function Hyperdeck(ip) {
       }
       else {
         // response has a failure status code
-        requestCompletionPromise.reject(response.data); 
+        requestCompletionPromise.reject(response.data);
       }
       onRequestCompleted();
     }
@@ -115,7 +117,7 @@ function Hyperdeck(ip) {
       requestCompletionPromise.reject(null);
       onRequestCompleted();
     }
-    
+
     if (!connected) {
       // connection has been lost
       // don't even attempt the request
@@ -132,46 +134,48 @@ function Hyperdeck(ip) {
     }
   }
 
-  /**
-   * Make a request to the hyperdeck.
-   * - If the hyperdeck returns a success response the promise will be resolved
-   *   with the payload.
-   * - If the hyperdeck returns a failure response the promise will be rejected
-   *   with the payload.
-   * - If the hyperdeck looses connection or is not connected the promise will be
-   *   rejected and the payload will be `null`.
-   * @return The promise which will resolve/reject when a response has been received
-   *         (or connection lost).
-   **/
-  this.makeRequest = function(requestToProcess) {
-    var completionPromise = new Promise(function(resolve, reject) {
-      requestCompletionPromise.push({
-        resolve: resolve,
-        reject: reject
-      });
-    });
-    pendingRequests.push(requestToProcess);
-    console.log("Queueing request: "+requestToProcess);
-    performNextRequest();
-    return completionPromise;
-  };
+    /**
+    * Make a request to the hyperdeck.
+    * - If the hyperdeck returns a success response the promise will be resolved
+    *   with the payload.
+    * - If the hyperdeck returns a failure response the promise will be rejected
+    *   with the payload.
+    * - If the hyperdeck looses connection or is not connected the promise will be
+    *   rejected and the payload will be `null`.
+    * @return The promise which will resolve/reject when a response has been received
+    *         (or connection lost).
+    **/
+    this.makeRequest = function(requestToProcess) {
 
-  /**
-   * Determine if currently connected to the hyperdeck.
-   * @return boolean true if connected, false otherwise.
-   */
-  this.isConnected = function() {
-    return connected;
-  }
+        var completionPromise = new Promise(function(resolve, reject) {
+            requestCompletionPromise.push({
+                resolve: resolve,
+                reject: reject
+            });
+        });
 
-  /**
-   * Get the notifier.
-   * Events with id "asynchronousEvent" will be emitted from this for asynchronous events
-   * from the hyperdeck.
-   */
-  this.getNotifier = function() {
-    return notifier;
-  }
+        pendingRequests.push(requestToProcess);
+        console.log("Queueing request: "+requestToProcess);
+        performNextRequest();
+        return completionPromise;
+    };
+
+    /**
+    * Determine if currently connected to the hyperdeck.
+    * @return boolean true if connected, false otherwise.
+    */
+    this.isConnected = function() {
+        return connected;
+    };
+
+    /**
+    * Get the notifier.
+    * Events with id "asynchronousEvent" will be emitted from this for asynchronous events
+    * from the hyperdeck.
+    */
+    this.getNotifier = function() {
+       return notifier;
+    };
 }
 
 module.exports = Hyperdeck;

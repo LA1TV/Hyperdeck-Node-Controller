@@ -17,7 +17,7 @@ function ResponseHandler(clientSocket) {
           success: data.type === "synchronousSuccess",
           data: data.data
         };
-        notifier.emit("synchronousResponse", response)
+        notifier.emit("synchronousResponse", response);
         break;
       case "asynchronous":
         notifier.emit("asynchronousResponse", data.data);
@@ -30,6 +30,6 @@ function ResponseHandler(clientSocket) {
 
 ResponseHandler.prototype.getNotifier = function() {
   return notifier;
-}
+};
 
 module.exports = ResponseHandler;
