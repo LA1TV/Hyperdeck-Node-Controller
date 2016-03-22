@@ -84,7 +84,7 @@ describe('Parser', function() {
 
   it('should throw an exception if the input string is not valid', function() {
     (function() {
-        Parser.parse(INVALID_RESPONSE)
+        Parser.parse(INVALID_RESPONSE);
     }).should.throw();
   });
 
