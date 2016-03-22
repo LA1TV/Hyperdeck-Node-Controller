@@ -38,7 +38,7 @@ function convertDataToObject(data) {
  * Parses responses from the hyperdeck into a nice object.
  */
  function failureResponseCode(data) {
-   console.log("***** FAILURE - SYNCHRONOUS RESPONSE *****");
+  console.log("failure", convertDataToObject(data));
    return {
      type: "synchronousFailure",
      data: convertDataToObject(data)
@@ -46,7 +46,6 @@ function convertDataToObject(data) {
  }
 
  function successResponseCode(data) {
-   console.log("***** SUCESSFUL - SYNCHRONOUS RESPONSE *****");
    return {
      type: "synchronousSuccess",
      data: convertDataToObject(data)
@@ -54,7 +53,6 @@ function convertDataToObject(data) {
  }
 
  function asynchornousResponseCode(data) {
-   console.log("***** ASYNCHRONOUS RESPONSE *****");
    return {
      type: "asynchronous",
      data: convertDataToObject(data)
@@ -74,7 +72,7 @@ var Parser = {
       case "5":
         return asynchornousResponseCode(data);
       default:
-        throw "Invalid payload.";
+        throw new Error("Invalid payload. Unknown response code.");
     }
   }
 };
