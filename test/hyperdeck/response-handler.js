@@ -7,8 +7,8 @@ var SUCCESS_RESPONSE_EVENT_PAYLOAD = {
     code: 200,
     text: "Success with data",
     params: {
-        something: "123",
-        "something else": "test"
+      something: "123",
+      "something else": "test"
     }
   }
 };
@@ -20,8 +20,8 @@ var FAILURE_RESPONSE_EVENT_PAYLOAD = {
     code: 102,
     text: "Failure",
     params: {
-        something: "123",
-        "something else": "test"
+      something: "123",
+      "something else": "test"
     }
   }
 };
@@ -31,9 +31,9 @@ var ASYNC_RESPONSE_EVENT_PAYLOAD = {
   code: 512,
   text: "Async event",
   params: {
-      "protocol version": "9.5",
-      model: "xyz",
-      time: "12:40:12"
+    "protocol version": "9.5",
+    model: "xyz",
+    time: "12:40:12"
   }
 };
 

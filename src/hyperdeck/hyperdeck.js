@@ -7,7 +7,7 @@ var events = require('events');
 var notifier = new events.EventEmitter();
 
 var pendingRequests = [];
-var requestCompletionPromise = [];
+var requestCompletionPromises = [];
 var requestInProgress = false;
 
 /**
@@ -75,7 +75,7 @@ function Hyperdeck(ip) {
 
     requestInProgress = true;
     var request = pendingRequests.shift();
-    var requestCompletionPromise = requestCompletionPromise.shift();
+    var requestCompletionPromise = requestCompletionPromises.shift();
     var listenersRegistered = false;
 
     function onRequestCompleted() {
@@ -91,8 +91,8 @@ function Hyperdeck(ip) {
 
     function removeListeners() {
       if (listenersRegistered) {
-        responseHandler.getNotifier().off("synchronousResponse", handleResponse);
-        notifier.off("connectionLost", handleConnectionLoss);
+        responseHandler.getNotifier().removeListener("synchronousResponse", handleResponse);
+        notifier.removeListener("connectionLost", handleConnectionLoss);
       }
     }
 
@@ -148,7 +148,7 @@ function Hyperdeck(ip) {
     this.makeRequest = function(requestToProcess) {
 
         var completionPromise = new Promise(function(resolve, reject) {
-            requestCompletionPromise.push({
+            requestCompletionPromises.push({
                 resolve: resolve,
                 reject: reject
             });
