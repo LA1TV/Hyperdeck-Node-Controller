@@ -1,10 +1,10 @@
 Hyperdeck-Node-Controller v0.2
 -------------------------
-A Hyperdeck controller for control over a web interface to fully uttilise the Hyperdeck API
+A Hyperdeck controller for control over a web interface to fully utilise the Hyperdeck API
 
 #### Current Ability
 * Takes in and parses data buffers from the Hyperdeck.
-* Creates a Hyperdeck instance for a web js server to uttilise.
+* Creates a Hyperdeck instance for a web js server to utilise.
 * Handles requests to be made to the Hyperdeck.
 
 #### Project goal
