@@ -1,9 +1,10 @@
 var express = require('express');
 var socket = require('socket.io');
-var Hyperdeck = require('hypderdeck-js-lib');
+var HyperdeckLib = require('hyperdeck-js-lib');
 
 //Stuff
-var hyperdeck = new Hyperdeck("192.168.72.60");
+var hyperdeck = new HyperdeckLib.Hyperdeck("192.168.72.61");
+hyperdeck.onConnected().then(function() {console.log("Connected to Hyperdeck!");});
 
 var savedLocations = require("./markers.json");
 var fs = require("fs");
@@ -23,11 +24,11 @@ function writeMarkers(data) {
   });
 }
 
-/*
+
 function saveLocation(data) {
-  var slotID = data.slotID,
-      clipID = data.clipID,
-      timecode = data.timecode;
+  var slotID = data.params["slot id"],
+      clipID = data.params["clip id"],
+      timecode = data.params["timecode"];
 
   savedLocations.push({
     'timecode': timecode,
@@ -38,7 +39,6 @@ function saveLocation(data) {
   io.emit("savedLocations", savedLocations);
   writeMarkers(savedLocations);
 }
-*/
 
 function deleteLocation(data) {
   savedLocations.splice(data, 1);
@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
   });
   socket.on('save', function() {
     console.log('save');
-    hyperdeck.getTimecode();
+    hyperdeck.transportInfo().then(saveLocation);
   });
   socket.on('record', function() {
     console.log('Recording');
@@ -72,12 +72,12 @@ io.on('connection', function(socket) {
   socket.on('delete', function(ref) {
     deleteLocation(ref);
   });
-  socket.on('getTransportInfo', function() {
-    hyperdeck.getTransportInfo();
-  });
+
 
 });
-
+hyperdeck.getNotifier().on("asynchronousEvent", function(response) {
+  console.log("Got an asynchronous event with code "+response.code+".");
+});
 
 
 
