@@ -41,11 +41,11 @@
   </p>
     <ol>
       <% for(var i in markers){%>
-        <ul>
+        <ul id="entry<%=i%>">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <b>Timecode:</b>
-              <%=markers[i].timecode%>
+              <b>Timecode:</b> <span id="timecode<%=i%>"><%=markers[i].timecode%>
+            </span>
 
             <div class='btn-group'>
               <button class="btn btn-warning" onclick="decreaseTimecode(<%=i%>)"><span class="glyphicon glyphicon-step-backward"></span></button>
@@ -73,6 +73,17 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io.connect('http://' + window.location.host);
+
+    socket.on('markers', function(payload){
+      for(i in payload){
+        if (document.getElementById("timecode" +i)){
+          document.getElementById("timecode" +i).innerHTML = payload[i].timecode;
+        }else{
+          location.reload();
+        }
+      }
+    })
+
     function play(speed) {
       socket.emit('play', speed);
     }
@@ -101,6 +112,13 @@
     }
 	  function record(){
 	    socket.emit('record', 'record')
+    }
+    function increaseTimecode(i){
+      socket.emit('increment', [i, 1])
+
+    }
+    function decreaseTimecode(i){
+      socket.emit('increment', [i, -1])
     }
   </script>
 </body>
