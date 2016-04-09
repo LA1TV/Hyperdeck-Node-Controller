@@ -54,8 +54,13 @@ io.on('connection', function(socket) {
     hyperdeck.stop();
   });
   socket.on('play', function(payload) {
-    console.log('play ' + payload);
-    hyperdeck.play(payload);
+    console.log('play ' + JSON.stringify(payload));
+    if(payload.tc){
+      hyperdeck.goTo(payload.tc);
+      hyperdeck.play(payload.speed);
+    }else{
+      hyperdeck.play(payload);
+    }
   });
   socket.on('goto', function(payload) {
     console.log('goto ' + payload);
