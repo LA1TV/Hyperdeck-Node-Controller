@@ -28,7 +28,7 @@ function writeMarkers(data) {
 function saveLocation(data) {
   var slotID = data.params["slot id"],
       clipID = data.params["clip id"],
-      timecode = data.params["timecode"];
+      timecode = data.params.timecode;
 
   savedLocations.push({
     'timecode': timecode,
