@@ -1,6 +1,6 @@
 var express = require('express');
 var socket = require('socket.io');
-var Hyperdeck = require('./hyperdeck/hyperdeck.js');
+var Hyperdeck = require('hypderdeck-js-lib');
 
 //Stuff
 var hyperdeck = new Hyperdeck("192.168.72.60");
