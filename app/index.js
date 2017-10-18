@@ -95,6 +95,9 @@ io.on('connection', function(socket) {
     io.emit("markers", savedLocations);
     writeMarkers(savedLocations);
   });
+  socket.on('getTransportInfo', function(ref) {
+    console.log(hyperdeck.transportInfo());
+  });
 
 
 });

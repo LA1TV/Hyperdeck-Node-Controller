@@ -9,4 +9,3 @@ A HyperDeck controller for control over a web interface to fully utilise the Hyp
 * View recording status, remaining space, remaining time
 * Play at different speeds
 * Able to configure HyperDeck settings
-* Fully compatible with all browsers
