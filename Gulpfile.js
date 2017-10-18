@@ -1,11 +1,11 @@
-var jshint = require('gulp-jshint')
 var gulp = require('gulp')
+var eslint = require('gulp-eslint')
 
 gulp.task('lint', function () {
-  return gulp.src(['*.js', '**/*.js', '!node_modules/**/*.js'])
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'))
+  return gulp.src(['**/*.js', '!node_modules/**'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
 })
 
 gulp.task('default', ['lint'])
