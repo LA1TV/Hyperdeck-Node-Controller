@@ -87,39 +87,46 @@
     function play(speed) {
       socket.emit('play', speed);
     }
+
     function goto(data) {
       socket.emit('goto', data);
     }
+
     function stop() {
       socket.emit('stop', 'stop')
     }
+
     function goto(timecode) {
       socket.emit('goto', timecode)
     }
+
     function getTransportInfo() {
       socket.emit('getTransportInfo')
     }
+
     function newMarker() {
       socket.emit('save')
       location.reload();
-
     }
+
     function removeMarker(ref) {
       socket.emit('delete', ref)
       console.log("delete" + ref)
       location.reload();
-
     }
+
 	  function record(){
 	    socket.emit('record', 'record')
     }
+
     function increaseTimecode(i){
       socket.emit('increment', [i, 1])
-
     }
+
     function decreaseTimecode(i){
       socket.emit('increment', [i, -1])
     }
+
   </script>
 </body>
 </html>
