@@ -1,5 +1,4 @@
 before_script:
-    - cd app
     - npm install
 language: node_js
 sudo: required
