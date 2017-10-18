@@ -93,7 +93,10 @@ io.on('connection', function (socket) {
     writeMarkers(savedLocations)
   })
   socket.on('getTransportInfo', function (ref) {
-    console.log(hyperdeck.transportInfo())
+    hyperdeck.transportInfo()
+      .then((response) => {
+        console.log(response)
+      })
   })
 })
 hyperdeck.getNotifier().on('asynchronousEvent', function (response) {

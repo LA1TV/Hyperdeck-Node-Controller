@@ -1,4 +1,4 @@
-Hyperdeck-Node-Controller v0.2
+Hyperdeck-Node-Controller v1.0.1
 -------------------------
 A HyperDeck controller for control over a web interface to fully utilise the HyperDeck API
 
